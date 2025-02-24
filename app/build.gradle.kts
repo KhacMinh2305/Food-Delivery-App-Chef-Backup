@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
 }
 
@@ -28,11 +30,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        dataBinding = true
     }
 }
 
@@ -47,6 +53,52 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //DI
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.navigation.fragment)
+
+    //Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room.ktx)
+
+    // Coroutine
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Paging 3
+    implementation(libs.androidx.paging.runtime)
+
+    // Responsive size and dimension
+    implementation (libs.sdp.android)
+    implementation (libs.ssp.android)
+
+    // Glide
+    implementation(libs.glide)
+
+    // Retrofit + OkHttp + Gson
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation(libs.converter.gson)
+
+    // Fragment
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.fragment.ktx)
+
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+}
+
+kapt {
+    correctErrorTypes = true
 }

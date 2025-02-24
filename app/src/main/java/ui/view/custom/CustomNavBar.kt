@@ -1,4 +1,4 @@
-package ui.view
+package ui.view.custom
 
 import android.content.Context
 import android.content.res.ColorStateList

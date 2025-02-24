@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/app_nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav_graph"
+    app:startDestination="@id/home_nav_graph">
+
+    <!---->
+
+    <include app:graph="@navigation/home_nav_graph" />
+    <include app:graph="@navigation/management_nav_graph" />
+    <include app:graph="@navigation/notification_nav_graph" />
+    <include app:graph="@navigation/profile_nav_graph" />
+
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="ui.view.fragment.independent.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" />
 
 </navigation>

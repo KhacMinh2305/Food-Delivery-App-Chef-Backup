@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/home_nav_graph"
+        android:icon="@drawable/ic_home"
+        android:title="home_nav_graph"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/management_nav_graph"
+        android:icon="@drawable/ic_management"
+        android:title="management_nav_graph"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/plus_button"
+        android:icon="@null"
+        android:title="plus_button"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/notification_nav_graph"
+        android:icon="@drawable/ic_notification"
+        android:title="notification_nav_graph"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/profile_nav_graph"
+        android:icon="@drawable/ic_user"
+        android:title="profile_nav_graph"
+        app:showAsAction="always"/>
 
 </menu>

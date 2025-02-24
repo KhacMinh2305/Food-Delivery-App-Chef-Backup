@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <stroke android:width="2dp"
+                android:color="@color/orange"/>
+            <solid android:color="#FFF4F2"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_plus" android:gravity="center"
+        android:width="@dimen/_25sdp"
+        android:height="@dimen/_25sdp"/>
+</layer-list>

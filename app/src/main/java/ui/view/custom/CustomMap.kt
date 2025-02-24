@@ -1,8 +1,7 @@
-package ui.view
+package ui.view.custom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +48,9 @@ class CustomMap(private val context : Context, private val attrs : AttributeSet)
             }
             MotionEvent.ACTION_UP -> {
                 oldMoveX = 0
-                if(fingerDown && fingerMove) mapView.onTouchEventEnd(CustomMapWidget.GestureType.MOVE) else mapView.onTouchEventEnd(CustomMapWidget.GestureType.CLICK)
+                if(fingerDown && fingerMove) mapView.onTouchEventEnd(CustomMapWidget.GestureType.MOVE) else mapView.onTouchEventEnd(
+                    CustomMapWidget.GestureType.CLICK
+                )
                 clear()
                 return true
             }

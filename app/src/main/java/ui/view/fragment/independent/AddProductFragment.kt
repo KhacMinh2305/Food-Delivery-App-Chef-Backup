@@ -1,4 +1,4 @@
-package ui.view.fragment.fragment
+package ui.view.fragment.independent
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
