@@ -15,6 +15,10 @@ import kotlin.math.roundToInt
 
 class CustomMapWidget(private val context : Context, private val attrs : AttributeSet) : View(context, attrs) {
 
+    enum class GestureType {
+        MOVE, CLICK
+    }
+
     // y = ax + b (the vertical orientation is opposite with the vertical display orientation)
     // So , the real Y coordinator to draw is : <height - y>
     class LineFunction(private val a : Float, private val b : Float) {
@@ -28,7 +32,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
     }
 
     companion object {
-        private const val TOP_PADDING = 15 // 30
+        private const val TOP_PADDING = 30
         private const val COLUMN_TEXT_AREA_HEIGHT = 60
         private const val COLUMN_TEXT_SIZE = 30f
         private const val DISPLAY_COLUMN_NUMBER = 7
@@ -99,7 +103,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
         usedHeight = totalHeight - TOP_PADDING - COLUMN_TEXT_AREA_HEIGHT
         columnDistance = totalWidth / (DISPLAY_COLUMN_NUMBER - 1) // n columns generate (n - 1) distances between each two columns
         translateRange = ((listMoney.size - 1) * columnDistance - totalWidth).toFloat() + 38f
-        maxIndicatorTranslate = (columnDistance * listMoney.size - 1).toFloat()
+        maxIndicatorTranslate = (columnDistance * (listMoney.size - 1)).toFloat()
     }
 
     private fun calculateColumnHeightBaseOnMoney() : Boolean {
@@ -127,7 +131,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
 
     private var initialized = false // calculate input one time. Only re-calculate when support scaling map
 
-    private fun calculateIndicatorYOnTranslating(x : Float) : Float { // test
+    private fun calculateIndicatorYOnTranslating(x : Float) : Float {
         val division = ((x / columnDistance).toInt()).coerceAtMost(lineFunctions.size - 1)
         val func = lineFunctions[division]
         return (usedHeight + TOP_PADDING) - func.findY(x)
@@ -269,7 +273,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
         }
         canvas.drawPath(backgroundLine, backgroundPaint)
 
-        // TODO : draw indicator (V2)
+        // TODO : draw indicator
         canvas.drawPath(generateIndicatorOuterCircle(), indicatorPaint)
         canvas.drawPath(generateIndicatorInnerCircle(), indicatorPaint)
         canvas.drawPath(generateIndicatorLine(), indicatorPaint)
@@ -284,7 +288,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
 
     private fun onMoveIndicator(translateX : Int) {
         // check if user attempt to swipe indicator out of range
-        if(indicatorTranX >= maxIndicatorTranslate && translateX >= 0) { // drag indicator to right (near to max)
+        if(indicatorTranX >= maxIndicatorTranslate && translateX >= 0) {  // drag indicator to right (near to max)
             indicatorTranX = maxIndicatorTranslate
             indicatorTranslateMatrix.apply {
                 reset()
@@ -298,9 +302,9 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
             }
         } else { // maintain the current coordinator X of indicator
             val moveX = translateX * SWIPE_VELOCITY
-            indicatorTranX += /*translateX*/ moveX
+            indicatorTranX += moveX
             indicatorTranslateMatrix.apply {
-                preTranslate(/*translateX.toFloat()*/ moveX, 0f)
+                preTranslate(moveX, 0f)
             }
         }
         postInvalidate()
@@ -329,6 +333,20 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
             preTranslate(+translateX.toFloat(), 0f)
         }
         postInvalidate()
+    }
+
+    fun onTouchEventEnd(eventType : GestureType) {
+        if(eventType == GestureType.CLICK) {
+            // handle click
+            return
+        }
+        // handle move
+    }
+
+    private fun anchorIndicatorToNearestColumn() {
+        val division = indicatorTranX / columnDistance
+        val remainder = indicatorTranX % columnDistance
+        val lineIndex = division + remainder / (columnDistance / 2)
     }
 
     // Tasks :
