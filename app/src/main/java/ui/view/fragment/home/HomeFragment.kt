@@ -55,3 +55,64 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 }
+
+/*Cau truc thu muc :
+
+Doi voi man hinh ngoai, dau tien se lay danh sach cac room co chua
+
+// Danh sach phong chat lay ve thi cho vao list de tien show cho ui. Moi khi co cap nha tu su kien nghe thi cap nhat vao list,
+sau do emit event len ui de update
+
+chat[
+    users{
+        attending_room[
+            user1<id1> {
+                rooms : {
+                    id1,
+                    id2,
+                    ...
+                }
+            }
+        ]
+    },
+    rooms{
+        room[
+            room<id>{
+                latest_message{
+                    sender : {
+                        id : Int,
+                        name : String
+                    }
+                    content : String,
+                    time : String
+                }
+                members[
+                    member1<id1>{
+                        id : Int,
+                        name : String,
+                        image : String,
+                        join_time : String,
+                        attending : Boolean
+                    }
+                ],
+                messages[
+                    message1<id1> {
+                        id : String,
+                        sender : {
+                            id : Int,
+                            name : String
+                        }
+                        content : String,
+                        time : String
+                    }
+                ],
+                waiting_messages[
+                    member1<id1>{
+                        number : Int
+                    }
+                ]
+            }
+        ]
+    }
+]
+ * */

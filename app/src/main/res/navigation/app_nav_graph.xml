@@ -5,8 +5,6 @@
     android:id="@+id/app_nav_graph"
     app:startDestination="@id/home_nav_graph">
 
-    <!---->
-
     <include app:graph="@navigation/home_nav_graph" />
     <include app:graph="@navigation/management_nav_graph" />
     <include app:graph="@navigation/notification_nav_graph" />
@@ -17,5 +15,15 @@
         android:name="ui.view.fragment.independent.AddProductFragment"
         android:label="fragment_add_product"
         tools:layout="@layout/fragment_add_product" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ui.view.fragment.independent.LoginFragment"
+        android:label="LoginFragment" />
+
+    <action
+        android:id="@+id/action_login"
+        app:destination="@id/loginFragment"
+        app:restoreState="false"/>
 
 </navigation>

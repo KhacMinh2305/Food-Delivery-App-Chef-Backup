@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.room.ktx)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     // Coroutine
     implementation(libs.kotlinx.coroutines.android)
 

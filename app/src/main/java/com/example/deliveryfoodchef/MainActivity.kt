@@ -1,20 +1,30 @@
 package com.example.deliveryfoodchef
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.deliveryfoodchef.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ui.viewmodel.AppViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var binding : ActivityMainBinding? = null
+    private lateinit var viewmodel : AppViewModel
     private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +33,32 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main)
             .apply { lifecycleOwner = this@MainActivity }
         initialize()
+        observeState()
     }
 
     private fun initialize() {
+        viewmodel = ViewModelProvider(this)[AppViewModel::class.java]
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_container) as NavHostFragment
         navHostFragment.also {
             this@MainActivity.navController = it.navController
             binding!!.bottomNavView.setupWithNavController(navController)
+        }
+        viewmodel.checkUserLoggedIn()
+    }
+
+    private fun observeState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewmodel.navigationState.collect {
+                    if(it) {
+                        withContext(Dispatchers.Main) {
+                            navController.navigate(R.id.action_login)
+                        }
+                        return@collect
+                    }
+                    Log.d("TAG", "OK ! cho home load data ")
+                }
+            }
         }
     }
 
