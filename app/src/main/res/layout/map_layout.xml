@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="15dp">
 
-    <ui.view.CustomMapWidget
+    <ui.view.custom.CustomMapWidget
         android:id="@+id/custom_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

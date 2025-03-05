@@ -2,4 +2,9 @@
     <string name="app_name">DeliveryFoodChef</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="running_orders">RUNNING ORDERS</string>
+    <string name="request_orders">REQUEST ORDERS</string>
+    <string name="total_revenue">Total Revenue</string>
+    <string name="see_details">See Details</string>
+    <string name="reviews">Reviews</string>
 </resources>

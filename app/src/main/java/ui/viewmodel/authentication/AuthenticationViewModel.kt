@@ -1,11 +1,13 @@
 package ui.viewmodel.authentication
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import data.model.Result
 import data.repo.AuthenticationRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,37 +16,21 @@ class AuthenticationViewModel @Inject constructor(
     private val authRepository : AuthenticationRepository
 ) : ViewModel() {
 
-    init {
-        checkUserLoggedIn()
-    }
+    private val _navigationState = Channel<Unit>()
+    val navigationState : Flow<Unit> = _navigationState.receiveAsFlow()
 
-    private fun checkUserLoggedIn() {
-        viewModelScope.launch(Dispatchers.IO) {
-            when(val result = authRepository.checkUserLoggedIn()) {
-                is Result.Success -> {
-                    val chefId = result.data as Int?
-                    if(chefId != null) {
-                        Log.d("TAG", "Cho vao man home")
-                        return@launch
-                    }
-                    Log.d("TAG", "Khong co du lieu , bat dang nhap")
-                }
-                else -> {
-                    Log.d("TAG", "Khong co data")
-                }
-            }
-        }
-    }
+    private val _messageState = Channel<String>()
+    val messageState : Flow<String> = _messageState.receiveAsFlow()
 
     fun login(account : String, password : String) {
         viewModelScope.launch(Dispatchers.IO) {
             when(val result = authRepository.login(account, password)) {
                 is Result.Success -> {
                     val chefId = result.data as Int
-                    Log.d("TAG", "Login thanh cong, chef Id : $chefId")
+                    _navigationState.send(Unit)
                 }
                 else -> {
-                    Log.d("TAG", "Login that bai, Tai khoan khong ton tai")
+                    _messageState.send("Login failed ! Account info is wrong")
                 }
             }
         }

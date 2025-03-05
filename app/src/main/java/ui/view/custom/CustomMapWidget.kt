@@ -77,6 +77,12 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
         178.32, 423.98, 67.15, 295.41, 98.76, 451.09, 287.62, 125.83, 410.55, 379.21, 345.90, 163.74,
         558.18, 402.57, 81.33, 316.96, 465.29, 149.67, 253.84, 391.12, 159.48, 17.03, 334.75, 292.86
     )
+
+    /*private var listMoney = listOf( // values list for each column
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    )*/
+
     private lateinit var columnHeights : List<Int>
     private val lineFunctions = mutableListOf<LineFunction>()
     private val translateMatrix = Matrix().apply {
@@ -109,6 +115,10 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
     private fun calculateColumnHeightBaseOnMoney() : Boolean {
         if(listMoney.isEmpty()) return false
         val maxValue = listMoney.max()
+        if(maxValue == 0.0) {
+            columnHeights = listMoney.map { 0 }
+            return true
+        }
         columnHeights = listMoney.map {
             (it / maxValue * usedHeight).roundToInt()
         }

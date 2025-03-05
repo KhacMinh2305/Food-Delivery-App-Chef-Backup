@@ -1,10 +1,10 @@
 package ui.viewmodel
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import data.model.Result
 import data.repo.AuthenticationRepository
+import data.repo.MessageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val authRepository : AuthenticationRepository
+    private val authRepository : AuthenticationRepository,
+    private val messageRepository : MessageRepository
 ) : ViewModel() {
 
     private val _navigationState = Channel<Boolean>()
@@ -27,6 +28,7 @@ class AppViewModel @Inject constructor(
                     val chefId = result.data as Int?
                     if(chefId != null) {
                         _navigationState.send(false)
+                        messageRepository.startObserveMessages()
                         return@launch
                     }
                     _navigationState.send(true)
@@ -38,4 +40,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    fun startObserveMessage() {
+        messageRepository.startObserveMessages()
+    }
 }

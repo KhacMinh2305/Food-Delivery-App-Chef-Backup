@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="item"
+            type="data.model.ChatRoom" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:src="@color/black"
+            app:imageUrl="@{item.chef.image}"
+            android:layout_marginVertical="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/CircleImage" />
+
+        <View
+            android:id="@+id/online_status_view"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            tools:background="@drawable/user_state_drawable"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="@+id/profile_image"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textSize="@dimen/_13ssp"
+            android:text="@{item.user.name}"
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toTopOf="@+id/profile_image"
+            tools:text="Doan Khac Minh" />
+
+        <TextView
+            android:id="@+id/message_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:text="@{item.latestMessage}"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/name_textview"
+            tools:text="Sounds awesome!" />
+
+        <TextView
+            android:id="@+id/time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            app:layout_constraintBottom_toTopOf="@id/un_seen_number_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name_textview"
+            tools:text="23:01" />
+
+        <TextView
+            android:id="@+id/un_seen_number_textview"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"
+            android:text="@{String.valueOf(item.chef.unSeenAmount)}"
+            android:visibility="@{(item.chef.unSeenAmount == 0) ? View.INVISIBLE : View.VISIBLE}"
+            android:background="@drawable/un_seen_message_drawable"
+            app:layout_constraintBottom_toBottomOf="@+id/message_textview"
+            app:layout_constraintEnd_toEndOf="@+id/time_textview"
+            app:layout_constraintTop_toBottomOf="@+id/time_textview"
+            tools:text="3" />
+
+        <View
+            android:id="@+id/indicator_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E2E2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

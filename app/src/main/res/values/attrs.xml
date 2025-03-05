@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WelcomeGuide">
+        <attr name="drawableSource" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="Verification">
+        <attr name="leftTime" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="Home">
+        <attr name="imageSource" format="integer"/>
+        <attr name="spannableText" format="string"/>
+        <attr name="imageUrl" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProductDetail">
+        <attr name="decimalValue" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="TrackOrder">
+        <attr name="statusColor" format="integer"/>
+    </declare-styleable>
+</resources>
