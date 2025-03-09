@@ -1,6 +1,7 @@
 package com.example.deliveryfoodchef
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -57,6 +58,14 @@ class MainActivity : AppCompatActivity() {
                         return@collect
                     }
                     Log.d("TAG", "OK ! cho home load data ")
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewmodel.bottomNavBarVisibilityState.collect {
+                    binding!!.bottomAppBar.visibility = if(it) View.VISIBLE else View.GONE
+                    binding!!.addingButton.visibility = if(it) View.VISIBLE else View.GONE
                 }
             }
         }

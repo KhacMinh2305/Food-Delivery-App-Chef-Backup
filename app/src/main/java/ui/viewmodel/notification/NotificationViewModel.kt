@@ -29,6 +29,4 @@ class NotificationViewModel @Inject constructor(
         _tabPositionState.value = position
     }
 
-    fun getRoomEmitter() = messageRepo.getRoomEmitter()
-
 }

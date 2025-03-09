@@ -20,5 +20,8 @@
 
     <declare-styleable name="TrackOrder">
         <attr name="statusColor" format="integer"/>
+        <attr name="timeValue" format="string"/>
+        <attr name="onlineState" format="boolean"/>
+        <attr name="seenState" format="boolean"/>
     </declare-styleable>
 </resources>

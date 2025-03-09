@@ -81,32 +81,22 @@ class NotificationFragment : Fragment() {
         binding.messageRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = ChattingRoomAdapter {
-                Log.d("TAG", "Click on item : $it")
+                navController.navigate(R.id.action_notificationFragment_to_chatingFragment, Bundle().apply {
+                    putString("room_id", it)
+                })
             }
         }
     }
 
     private fun observeStates() {
         observeChatRoomState()
-        observeRoomsChangedState()
-    }
-
-    private fun observeRoomsChangedState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notificationViewModel.getRoomEmitter().collect {
-                    (binding.messageRecyclerView.adapter as ChattingRoomAdapter).refresh()
-                    (binding.messageRecyclerView.adapter as ChattingRoomAdapter).notifyDataSetChanged()
-                }
-            }
-        }
     }
 
     private fun observeChatRoomState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notificationViewModel.chattingRoomsState.collect {
-                    (binding.messageRecyclerView.adapter as ChattingRoomAdapter).submitData(viewLifecycleOwner.lifecycle, it)
+                notificationViewModel.chattingRoomsState.collect { data ->
+                    (binding.messageRecyclerView.adapter as ChattingRoomAdapter).submitData(viewLifecycleOwner.lifecycle, data)
                 }
             }
         }

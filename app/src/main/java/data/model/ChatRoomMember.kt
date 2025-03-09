@@ -5,6 +5,6 @@ data class ChatRoomMember(
     val name : String,
     val image : String,
     var isOnline : Boolean,
-    val latestActive : Long,
+    var latestActive : Long,
     var unSeenAmount : Int
 )

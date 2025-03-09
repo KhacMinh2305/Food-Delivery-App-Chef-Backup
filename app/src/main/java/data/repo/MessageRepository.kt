@@ -10,9 +10,17 @@ class MessageRepository @Inject constructor(
 
     fun getChattingRoomPager() = messageDataSource.getChattingRoomPager()
 
-    fun getRoomEmitter() = messageDataSource.getRoomEmitter()
-
     fun startObserveMessages() {
         messageDataSource.startObserveMessages()
     }
+
+    fun startObserveRoomMessages(roomId : String) {
+        messageDataSource.startObserveRoomMessages(roomId)
+    }
+
+    suspend fun updateOnOffline() = messageDataSource.updateOnOffline()
+
+    fun getMessagePager(roomId: String) = messageDataSource.getMessagePager(roomId)
+
+    fun sendMessage(content : String, roomId : String) = messageDataSource.sendMessage(content, roomId)
 }

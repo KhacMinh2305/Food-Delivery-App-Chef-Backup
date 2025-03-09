@@ -1,5 +1,4 @@
 package ui.adapter
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -50,7 +49,8 @@ class ChattingRoomAdapter(private val onClickEvent : (String) -> Unit) : PagingD
     }
 
     override fun onBindViewHolder(holder: ChattingRoomViewHolder, position: Int) {
-        val let = getItem(position)?.let {
+        val item = getItem(position)
+        item?.let {
             holder.bind(it)
             holder.listenEvent(it.roomId)
         }

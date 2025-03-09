@@ -6,9 +6,9 @@ import data.model.ChatRoom
 import data.model.ChatRoomMember
 import kotlinx.coroutines.tasks.await
 
-class ChattingRoomPagingSource(private val query : Query, private val cachingSource : MutableList<ChatRoom>) : PagingSource<Long, ChatRoom>() {
+class ChattingRoomPagingSource(private val query : Query, private val cachingSource : MutableList<ChatRoom>) : PagingSource<Int, ChatRoom>() {
 
-    override fun getRefreshKey(state: PagingState<Long, ChatRoom>): Long? {
+    override fun getRefreshKey(state: PagingState<Int, ChatRoom>): Int? {
         return state.anchorPosition?.let {
             state.closestPageToPosition(it)?.prevKey?.plus(1) ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
         }
@@ -27,22 +27,32 @@ class ChattingRoomPagingSource(private val query : Query, private val cachingSou
         return room
     }
 
-    override suspend fun load(params: LoadParams<Long>): LoadResult<Long, ChatRoom> {
+    private fun copyData(left : Int, right : Int) : List<ChatRoom> {
+        val data = mutableListOf<ChatRoom>()
+        for(i in left until right) {
+            val item = cachingSource[i]
+            val newChef = ChatRoomMember(item.chef.id, item.chef.name, item.chef.image, item.chef.isOnline, item.chef.latestActive, item.chef.unSeenAmount)
+            val newUser = ChatRoomMember(item.user.id, item.user.name, item.user.image, item.user.isOnline, item.user.latestActive, item.user.unSeenAmount)
+            val newChatRoom = ChatRoom(item.roomId, newChef, newUser, item.latestMessage, item.latestMessageTime, item.senderId, item.role)
+            data.add(newChatRoom)
+        }
+        return data.toList()
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ChatRoom> {
         val loadKey = params.key?: 1
         if(cachingSource.isEmpty()) {
             val rooms = query.get().await().map { doc ->
-                convertRawDataIntoRooms(doc.id, doc.data!!)
+                convertRawDataIntoRooms(doc.id, doc.data)
             }
-            synchronized(cachingSource) {
-                cachingSource.addAll(rooms)
-                cachingSource.sortBy { it.latestMessageTime }
-            }
+            cachingSource.addAll(rooms)
+            cachingSource.sortByDescending { it.latestMessageTime }
         }
         val totalPage = cachingSource.size / 10 + (if(cachingSource.size % 10 > 0) 1 else 0)
         val left = 10 * (loadKey - 1)
-        val right = (left + 10).coerceAtMost(cachingSource.size.toLong())
-        val data = cachingSource.subList(left.toInt(), right.toInt())
-        return if(loadKey.toInt() == totalPage) LoadResult.Page(data, null, null, LoadResult.Page.COUNT_UNDEFINED, LoadResult.Page.COUNT_UNDEFINED)
-        else LoadResult.Page(data, null, loadKey + 1, LoadResult.Page.COUNT_UNDEFINED, LoadResult.Page.COUNT_UNDEFINED)
+        val right = (left + 10).coerceAtMost(cachingSource.size)
+        val data = copyData(left, right)
+        val nextKey = if(loadKey < totalPage) loadKey + 1 else null
+        return LoadResult.Page(data, null, nextKey, LoadResult.Page.COUNT_UNDEFINED, LoadResult.Page.COUNT_UNDEFINED)
     }
 }

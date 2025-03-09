@@ -9,5 +9,14 @@
         android:id="@+id/notificationFragment"
         android:name="ui.view.fragment.notification.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_chatingFragment"
+            app:destination="@id/chatingFragment"
+            app:restoreState="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/chatingFragment"
+        android:name="ui.view.fragment.notification.ChatingFragment"
+        android:label="ChatingFragment" />
 </navigation>

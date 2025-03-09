@@ -21,6 +21,9 @@ class AppViewModel @Inject constructor(
     private val _navigationState = Channel<Boolean>()
     val navigationState : Flow<Boolean> = _navigationState.receiveAsFlow()
 
+    private val _bottomNavBarVisibilityState = Channel<Boolean>()
+    val bottomNavBarVisibilityState : Flow<Boolean> = _bottomNavBarVisibilityState.receiveAsFlow()
+
     fun checkUserLoggedIn() {
         viewModelScope.launch(Dispatchers.IO) {
             when(val result = authRepository.checkUserLoggedIn()) {
@@ -42,5 +45,11 @@ class AppViewModel @Inject constructor(
 
     fun startObserveMessage() {
         messageRepository.startObserveMessages()
+    }
+
+    fun changeBottomNavBarVisibility(mode : Boolean) {
+        viewModelScope.launch {
+            _bottomNavBarVisibilityState.send(mode)
+        }
     }
 }
