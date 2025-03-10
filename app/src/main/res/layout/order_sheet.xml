@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<layout xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:id="@+id/orderBottomSheet"
+            style="@style/Widget.Material3.BottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#181C2E"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp"
+            app:behavior_peekHeight="0dp"
+            app:behavior_hideable="true"
+            app:behavior_draggable="false"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <View
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:background="#D2D2D2"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/total_running_order_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:gravity="center"
+                android:textSize="@dimen/_10ssp"
+                android:letterSpacing="0.05"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintBottom_toBottomOf="@+id/rating_textview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rating_textview"
+                app:layout_constraintTop_toTopOf="@+id/rating_textview"
+                tools:text="Totals 23 Reviews" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/order_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"/>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -52,13 +52,30 @@ class HomeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         initialize()
+        observeStates()
         return binding.root
     }
 
     private fun initialize() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java].apply {
             initialize(1)
+            binding.viewmodel = this
         }
         navController = findNavController(requireActivity(), R.id.nav_host_container)
+    }
+
+    private fun observeStates() {
+        observeIncomeGraphState()
+        observeRunningOrders()
+    }
+
+    private fun observeIncomeGraphState() {
+        homeViewModel.graphData.observe(viewLifecycleOwner) {
+            binding.mapView.setMoney(it)
+        }
+    }
+
+    private fun observeRunningOrders() {
+        
     }
 }

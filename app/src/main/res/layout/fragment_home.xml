@@ -2,6 +2,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewmodel"
+            type="ui.viewmodel.home.HomeViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -86,6 +92,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_semi_bold"
                         android:textSize="@dimen/_45ssp"
+                        android:text="@{String.valueOf(viewmodel.runningOrders)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +134,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_semi_bold"
                         android:textSize="@dimen/_45ssp"
+                        android:text="@{String.valueOf(viewmodel.requestOrders)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -177,6 +185,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_semi_bold"
                         android:textSize="@dimen/_16ssp"
+                        android:text="@{String.valueOf(viewmodel.totalRevenue)}"
                         app:layout_constraintEnd_toEndOf="@+id/revenue_title_textview"
                         app:layout_constraintStart_toStartOf="@+id/revenue_title_textview"
                         app:layout_constraintTop_toBottomOf="@+id/revenue_title_textview"
@@ -277,6 +286,7 @@
                         android:textColor="@color/orange"
                         android:textSize="@dimen/_15ssp"
                         android:gravity="center"
+                        android:text="@{String.valueOf(viewmodel.rating)}"
                         android:layout_marginStart="@dimen/_5sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/rating_imageview"
                         app:layout_constraintStart_toEndOf="@+id/rating_imageview"
@@ -292,6 +302,7 @@
                         android:gravity="center"
                         android:textSize="@dimen/_10ssp"
                         android:letterSpacing="0.05"
+                        android:text="@{viewmodel.totalReviews}"
                         app:layout_constraintHorizontal_bias="0.15"
                         app:layout_constraintBottom_toBottomOf="@+id/rating_textview"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -301,5 +312,19 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/bottomSheetAnchorView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"/>
+
+        <include
+            android:id="@+id/order_sheet"
+            layout="@layout/order_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/bottomSheetAnchorView"
+            app:layout_anchorGravity="top"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

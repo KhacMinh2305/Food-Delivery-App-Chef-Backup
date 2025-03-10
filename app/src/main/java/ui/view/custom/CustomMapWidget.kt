@@ -73,12 +73,7 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
     private var totalHeight = 0
     private var usedHeight = 0 // display map line part
     private var columnDistance = 0 // The distance between two columns
-    private var listMoney = listOf( // values list for each column
-        178.32, 423.98, 67.15, 295.41, 98.76, 451.09, 287.62, 125.83, 410.55, 379.21, 345.90, 163.74,
-        558.18, 402.57, 81.33, 316.96, 465.29, 149.67, 253.84, 391.12, 159.48, 17.03, 334.75, 292.86
-    )
-
-    /*private var listMoney = listOf( // values list for each column
+    private var listMoney = mutableListOf<Double>() /*mutableListOf( // values list for each column
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     )*/
@@ -99,8 +94,9 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
             Log.e("CustomMapWidget", "Empty List")
             return
         }
-        listMoney = money
-        invalidate()
+        listMoney.clear()
+        listMoney.addAll(money)
+        postInvalidate()
     }
 
     private fun calculateSizes() {
@@ -243,6 +239,8 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        if(listMoney.isEmpty()) return
 
         if(!initialized) {
             calculateSizes()
