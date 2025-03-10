@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import data.model.Order
 import data.model.Result
+import data.repo.AuthenticationRepository
 import data.repo.OrderRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val authRepo : AuthenticationRepository,
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
@@ -125,9 +127,37 @@ class HomeViewModel @Inject constructor(
                     orderId = order.orderId,
                     image = order.products.firstOrNull()?.imageUrl ?: "",
                     tag = "#Breakfast",
-                    name = order.products.firstOrNull()?.productName ?: "Unknown Product",
+                    totalItem = "${order.products.size} items",
                     price = "$${String.format("%.2f", order.amount)}"
                 )
             }
+    }
+
+    private suspend fun removeOrderOnChangeState(orderId : String) {
+        val orders = _runningOrdersData.value?.toMutableList()
+        orders?.apply {
+            removeIf { it.orderId == orderId }
+        }
+        withContext(Dispatchers.Main) {
+            _runningOrdersData.value = orders?.toList()
+        }
+    }
+
+    fun onOrderDone(orderId : String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = orderRepository.changeOrderState(authRepo.restaurantId!!, orderId, 3)
+            if(result) {
+                removeOrderOnChangeState(orderId)
+            }
+        }
+    }
+
+    fun onOrderCanceled(orderId : String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = orderRepository.changeOrderState(authRepo.restaurantId!!, orderId, 4)
+            if(result) {
+                removeOrderOnChangeState(orderId)
+            }
+        }
     }
 }

@@ -2,8 +2,11 @@ package data.source.remote
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
 import data.model.Order
 import data.model.OrderProduct
@@ -35,6 +38,7 @@ class RemoteOrderDataSource @Inject constructor(
         handler.postDelayed({
             addingEvent()
             eventTriggered = false
+            Log.d("TAG", "triggerEvent !")
         }, 10000)
     }
 
@@ -59,6 +63,7 @@ class RemoteOrderDataSource @Inject constructor(
             if(shouldUpdate && !eventTriggered) {
                 eventTriggered = true
                 triggerEvent(onEventTriggered)
+                Log.d("TAG", "order come or change !")
             }
         }
     }
@@ -105,6 +110,17 @@ class RemoteOrderDataSource @Inject constructor(
         } catch (e : Exception) {
             Log.e("RemoteOrderDataSource_loadRestaurantOrder", e.toString())
             return null
+        }
+    }
+
+    suspend fun changeOrderState(restaurantId : Int, orderId : String, state : Int) : Boolean {
+        try {
+            firebaseDb.collection(ORDER_NODE).document(restaurantId.toString()).collection(RESTAURANT_ORDER_NODE)
+                .document(orderId).update("status", state).await()
+            return true
+        } catch (e : Exception) {
+            Log.e("RemoteOrderDataSource_onOrderDone", e.toString())
+            return false
         }
     }
 }

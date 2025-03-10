@@ -20,4 +20,6 @@ class OrderRepository @Inject constructor(
         }
         return Result.Error(Exception("Load order failed"))
     }
+
+    suspend fun changeOrderState(restaurantId : Int, orderId : String, state : Int) = remoteOrderDataSource.changeOrderState(restaurantId, orderId, state)
 }

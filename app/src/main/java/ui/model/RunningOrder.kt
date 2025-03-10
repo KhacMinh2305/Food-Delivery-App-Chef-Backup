@@ -4,6 +4,6 @@ data class RunningOrder(
     val orderId : String,
     val image : String,
     val tag : String = "#Breakfast",
-    val name : String,
+    val totalItem : String,
     val price : String
 )

@@ -3,6 +3,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import ui.adapter.MessageAdapter
+import ui.adapter.RunningOrderAdapter
 
 class RecyclerViewItemDecoration(private val space : Int) : RecyclerView.ItemDecoration() {
 
@@ -16,6 +17,7 @@ class RecyclerViewItemDecoration(private val space : Int) : RecyclerView.ItemDec
         val currIndex = parent.getChildAdapterPosition(view)
         when(parent.adapter) {
             is MessageAdapter -> outRect.top = if (currIndex == 0) 0 else space
+            is RunningOrderAdapter -> outRect.top = if (currIndex == 0) 0 else space
         }
     }
 }
