@@ -47,7 +47,10 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun listenIncomingOrder(restaurantId: Int) {
-        orderRepository.listenIncomingOrder(restaurantId)
+        orderRepository.listenIncomingOrder(restaurantId) {
+            loadRestaurantOrders(restaurantId)
+            listenIncomingOrder(restaurantId)
+        }
     }
 
     private fun loadRestaurantOrders(restaurantId: Int) {

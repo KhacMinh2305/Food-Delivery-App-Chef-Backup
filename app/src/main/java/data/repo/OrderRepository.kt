@@ -10,8 +10,8 @@ class OrderRepository @Inject constructor(
     private val remoteOrderDataSource: RemoteOrderDataSource,
 ) {
 
-    fun listenIncomingOrder(restaurantId: Int) {
-        remoteOrderDataSource.listenIncomingOrder(restaurantId)
+    fun listenIncomingOrder(restaurantId: Int, onEventTriggered : () -> Unit) {
+        remoteOrderDataSource.listenIncomingOrder(restaurantId, onEventTriggered)
     }
 
     suspend fun loadRestaurantOrder(restaurantId : Int) : Result {

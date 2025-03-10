@@ -78,8 +78,8 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     )*/
 
-    private lateinit var columnHeights : List<Int>
-    private val lineFunctions = mutableListOf<LineFunction>()
+    private var columnHeights = mutableListOf<Int>() // TODO : changed
+    private val lineFunctions = mutableListOf<LineFunction>() // TODO : changed
     private val translateMatrix = Matrix().apply {
         preTranslate(40f, 0f)
     }
@@ -94,8 +94,15 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
             Log.e("CustomMapWidget", "Empty List")
             return
         }
+        onDataChanged(money) // TODO : changed
+    }
+
+    private fun onDataChanged(money : List<Double>) { // TODO : changed
         listMoney.clear()
+        columnHeights.clear()
+        lineFunctions.clear()
         listMoney.addAll(money)
+        initialized = false
         postInvalidate()
     }
 
@@ -112,12 +119,12 @@ class CustomMapWidget(private val context : Context, private val attrs : Attribu
         if(listMoney.isEmpty()) return false
         val maxValue = listMoney.max()
         if(maxValue == 0.0) {
-            columnHeights = listMoney.map { 0 }
+            columnHeights = listMoney.map { 0 }.toMutableList() // TODO : changed
             return true
         }
         columnHeights = listMoney.map {
             (it / maxValue * usedHeight).roundToInt()
-        }
+        }.toMutableList() // TODO : changed
         return true
     }
 
